@@ -51,7 +51,7 @@ class Etape(models.Model):
     nom_etape = models.CharField(max_length=100)
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
     quantite_ressource = models.ForeignKey(QuantiteRessource, on_delete=models.PROTECT)
-    duree = models.IntergerField()
+    duree = models.IntegerField()
     etape_suivante = models.ForeignKey("self", on_delete=models.PROTECT)
 
 
