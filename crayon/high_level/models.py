@@ -5,7 +5,7 @@ from django.db import models
 class Ville(models.Model):
     nom_ville = models.CharField(max_length=100)
     code_postal = models.IntegerField()
-    prix_m2 = models.IntegersField()
+    prix_m2 = models.IntegerField()
 
 
 class Local(models.Model):
@@ -17,12 +17,12 @@ class Local(models.Model):
 class Machine(models.Model):
     nom_machine = models.CharField(max_length=100)
     prix_machine = models.IntegersField()
-    n_serie_machine = models.IntegersField()
+    n_serie_machine = models.IntegerField()
 
 
 class Objet(models.Model):
     nom_objet = models.CharField(max_length=100)
-    prix_objet = models.IntegersField()
+    prix_objet = models.IntegerField()
 
 
 class Usine(Local):
@@ -39,19 +39,19 @@ class Ressource(Objet):
 
 class QuantiteRessource(models.Model):
     ressource = models.ForeignKey(Ressource, on_delete=models.PROTECT)
-    quantite = models.IntegersField()
+    quantite = models.IntegerField()
 
 
 class Stock(models.Model):
     objet = models.ForeignKey(Objet, on_delete=models.PROTECT)
-    nombre = models.IntegersField()
+    nombre = models.IntegerField()
 
 
 class Etape(models.Model):
     nom_etape = models.CharField(max_length=100)
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
     quantite_ressource = models.ForeignKey(QuantiteRessource, on_delete=models.PROTECT)
-    duree = models.IntergersField()
+    duree = models.IntergerField()
     etape_suivante = models.ForeignKey("self", on_delete=models.PROTECT)
 
 
