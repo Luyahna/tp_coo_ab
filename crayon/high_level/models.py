@@ -4,25 +4,25 @@ from django.db import models
 
 class Ville(models.Model):
     nom_ville = models.CharField(max_length=100)
-    code_postal = models.IntergerField()
-    prix_m2 = models.IntergersField()
+    code_postal = models.IntegerField()
+    prix_m2 = models.IntegersField()
 
 
 class Local(models.Model):
     nom_local = models.CharField(max_length=100)
     ville = models.ForeignKey(Ville, on_delete=models.PROTECT)
-    surface_local = models.IntergerField()
+    surface_local = models.IntegerField()
 
 
 class Machine(models.Model):
     nom_machine = models.CharField(max_length=100)
-    prix_machine = models.IntergersField()
-    n_serie_machine = models.IntergersField()
+    prix_machine = models.IntegersField()
+    n_serie_machine = models.IntegersField()
 
 
 class Objet(models.Model):
     nom_objet = models.CharField(max_length=100)
-    prix_objet = models.IntergersField()
+    prix_objet = models.IntegersField()
 
 
 class Usine(Local):
@@ -39,12 +39,12 @@ class Ressource(Objet):
 
 class QuantiteRessource(models.Model):
     ressource = models.ForeignKey(Ressource, on_delete=models.PROTECT)
-    quantite = models.IntergersField()
+    quantite = models.IntegersField()
 
 
 class Stock(models.Model):
     objet = models.ForeignKey(Objet, on_delete=models.PROTECT)
-    nombre = models.IntergersField()
+    nombre = models.IntegersField()
 
 
 class Etape(models.Model):
