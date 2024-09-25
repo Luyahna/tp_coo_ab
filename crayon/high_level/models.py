@@ -16,7 +16,7 @@ class Local(models.Model):
 
 class Machine(models.Model):
     nom_machine = models.CharField(max_length=100)
-    prix_machine = models.IntegersField()
+    prix_machine = models.IntegerField()
     n_serie_machine = models.IntegerField()
 
 
