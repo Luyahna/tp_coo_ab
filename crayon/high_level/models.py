@@ -1,6 +1,7 @@
 # Create your models here.
+import json
 from django.db import models
-
+from django.views.generic import DetailView
 
 class Ville(models.Model):
     nom_ville = models.CharField(max_length=100)
@@ -9,6 +10,13 @@ class Ville(models.Model):
     
     def __str__(self):
         return f"{self.code_postal} {self.nom_ville}"
+    
+    def json(self):
+        return {
+            'nom_ville': self.nom_ville,
+            'code_postal': self.code_postal,
+            'prix_m2': self.prix_m2
+        }
 
 
 class Local(models.Model):
@@ -36,6 +44,7 @@ class Machine(models.Model):
 class Objet(models.Model):
     nom_objet = models.CharField(max_length=100)
     prix_objet = models.IntegerField()
+    
     def __str__(self):
         return f"{self.nom_objet}"
       
@@ -87,8 +96,10 @@ class Etape(models.Model):
     quantite_ressource = models.ForeignKey(QuantiteRessource, on_delete=models.PROTECT)
     duree = models.IntegerField()
     etape_suivante = models.ForeignKey("self",blank= True, null = True ,on_delete=models.PROTECT)
+    
     def __str__(self):
         return f"{self.nom_etape}"
 
 class Produit(models.Model):
     premiere_etape = models.ForeignKey(Etape, on_delete=models.PROTECT)
+    
