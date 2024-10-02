@@ -29,6 +29,14 @@ class Local(models.Model):
         
     def costs(self):
     	return (self.surface_local) * (self.ville.prix_m2)
+    
+    def json(self):
+        return {
+            'nom_local': self.nom_local,
+            'ville': self.ville.id,
+            'surface_local': self.surface_local
+        }   	
+    
 
 class Machine(models.Model):
     nom_machine = models.CharField(max_length=100)
@@ -40,7 +48,14 @@ class Machine(models.Model):
         
     def costs(self):
     	return  self.prix_machine
-
+    
+    def json(self):
+        return {
+            'nom_machine': self.nom_machine,
+            'prix_machine': self.prix_machine,
+            'n_serie_machine': self.n_serie_machine
+        }  
+        
 class Objet(models.Model):
     nom_objet = models.CharField(max_length=100)
     prix_objet = models.IntegerField()
@@ -50,6 +65,12 @@ class Objet(models.Model):
       
     def costs(self):
     	return self.prix_objet 
+    
+    def json(self):
+        return {
+            'nom_objet': self.nom_objet,
+            'prix_objet': self.prix_objet
+        } 
        
 
 class Usine(Local):
@@ -60,7 +81,12 @@ class Usine(Local):
         for machine in self.machines.all():
             prix_machines = prix_machines + machine.prix_machine
         return prix_machines
-    	
+                  
+    def json(self):
+        return {
+            'machines': self.machines
+        } 
+
 
 class SiegeSocial(Local):
     pass
@@ -76,7 +102,12 @@ class QuantiteRessource(models.Model):
     
     def costs(self):     
         return self.ressource.prix_objet * self.quantite
-
+        
+    def json(self):
+        return {
+            'ressource': self.ressource,
+            'quantite': self.quantite
+        } 
     
 
 
@@ -87,6 +118,13 @@ class Stock(models.Model):
     
     def __str__(self):
         return f"{self.objet}"
+        
+    def json(self):
+        return {
+            'objet': self.objet,
+            'nombre': self.nombre,
+            'usine': self.usine
+        }      
         
     
 
@@ -99,7 +137,21 @@ class Etape(models.Model):
     
     def __str__(self):
         return f"{self.nom_etape}"
+        
+    def json(self):
+        return {
+            'nom_etape': self.nom_etape,
+            'machine': self.machine,
+            'quantite_ressource': self.quantite_ressource,
+            'duree': self.duree,
+            'etape_suivante': self.etape_suivante
+        }         
+
 
 class Produit(models.Model):
     premiere_etape = models.ForeignKey(Etape, on_delete=models.PROTECT)
-    
+         
+    def json(self):
+        return {
+            'premiere_etape': self.premiere_etape
+        }      
