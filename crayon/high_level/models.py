@@ -17,8 +17,13 @@ class Ville(models.Model):
             'code_postal': self.code_postal,
             'prix_m2': self.prix_m2
         }
-
-
+    def json_extended(self):
+        return {
+            'nom_ville': self.nom_ville,
+            'code_postal': self.code_postal,
+            'prix_m2': self.prix_m2
+        }
+    
 class Local(models.Model):
     nom_local = models.CharField(max_length=100)
     ville = models.ForeignKey(Ville, on_delete=models.PROTECT)
@@ -34,6 +39,12 @@ class Local(models.Model):
         return {
             'nom_local': self.nom_local,
             'ville': self.ville.id,
+            'surface_local': self.surface_local
+        }   	
+    def json_extended(self):
+        return {
+            'nom_local': self.nom_local,
+            'ville': self.ville.json_extended(),
             'surface_local': self.surface_local
         }   	
     
@@ -55,7 +66,15 @@ class Machine(models.Model):
             'prix_machine': self.prix_machine,
             'n_serie_machine': self.n_serie_machine
         }  
+
+    def json_extended(self):
+        return {
+            'nom_machine': self.nom_machine,
+            'prix_machine': self.prix_machine,
+            'n_serie_machine': self.n_serie_machine
+        } 
         
+         
 class Objet(models.Model):
     nom_objet = models.CharField(max_length=100)
     prix_objet = models.IntegerField()
@@ -67,6 +86,11 @@ class Objet(models.Model):
     	return self.prix_objet 
     
     def json(self):
+        return {
+            'nom_objet': self.nom_objet,
+            'prix_objet': self.prix_objet
+        } 
+    def json_extended(self):
         return {
             'nom_objet': self.nom_objet,
             'prix_objet': self.prix_objet
@@ -89,11 +113,17 @@ class Usine(Local):
         return {
             'machines': liste_machines
         } 
-
-
+        
+    def json_extended(self):
+        liste_machines = []
+        for machine in self.machines.all():
+            liste_machines.append(machine.json_extended())    
+        return {
+            'machines': liste_machines
+        } 
+    
 class SiegeSocial(Local):
     pass
-
 
 class Ressource(Objet):
     pass
@@ -109,6 +139,12 @@ class QuantiteRessource(models.Model):
     def json(self):
         return {
             'ressource': self.ressource.id,
+            'quantite': self.quantite
+        } 
+        
+    def json_extended(self):
+        return {
+            'ressource': self.ressource.json_extended(),
             'quantite': self.quantite
         } 
     
@@ -129,6 +165,13 @@ class Stock(models.Model):
             'usine': self.usine.id
         }      
         
+                
+    def json_extended(self):
+        return {
+            'objet': self.objet.json_extended(),
+            'nombre': self.nombre,
+            'usine': self.usine.json_extended()
+        }     
     
 
 class Etape(models.Model):
@@ -148,8 +191,16 @@ class Etape(models.Model):
             'quantite_ressource': self.quantite_ressource.id,
             'duree': self.duree,
             'etape_suivante': self.etape_suivante.id
-        }         
-
+        }   
+        
+    def json_extended(self):
+        return {
+            'nom_etape': self.nom_etape,
+            'machine': self.machine.json_extended(),
+            'quantite_ressource': self.quantite_ressource.json_extended(),
+            'duree': self.duree,
+            'etape_suivante': self.etape_suivante.json_extended()
+        }   
 
 class Produit(models.Model):
     premiere_etape = models.ForeignKey(Etape, on_delete=models.PROTECT)
@@ -157,4 +208,9 @@ class Produit(models.Model):
     def json(self):
         return {
             'premiere_etape': self.premiere_etape.id
-        }      
+            }
+    def json_extended(self):
+        return {
+             'premiere_etape': self.premiere_etape.json_extended()
+        }   
+
