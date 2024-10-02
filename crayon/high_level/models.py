@@ -83,8 +83,11 @@ class Usine(Local):
         return prix_machines
                   
     def json(self):
+        liste_machines = []
+        for machine in self.machines.all():
+            liste_machines.append(machine.id)     
         return {
-            'machines': self.machines
+            'machines': liste_machines
         } 
 
 
@@ -105,7 +108,7 @@ class QuantiteRessource(models.Model):
         
     def json(self):
         return {
-            'ressource': self.ressource,
+            'ressource': self.ressource.id,
             'quantite': self.quantite
         } 
     
@@ -121,9 +124,9 @@ class Stock(models.Model):
         
     def json(self):
         return {
-            'objet': self.objet,
+            'objet': self.objet.id,
             'nombre': self.nombre,
-            'usine': self.usine
+            'usine': self.usine.id
         }      
         
     
@@ -141,10 +144,10 @@ class Etape(models.Model):
     def json(self):
         return {
             'nom_etape': self.nom_etape,
-            'machine': self.machine,
-            'quantite_ressource': self.quantite_ressource,
+            'machine': self.machine.id,
+            'quantite_ressource': self.quantite_ressource.id,
             'duree': self.duree,
-            'etape_suivante': self.etape_suivante
+            'etape_suivante': self.etape_suivante.id
         }         
 
 
@@ -153,5 +156,5 @@ class Produit(models.Model):
          
     def json(self):
         return {
-            'premiere_etape': self.premiere_etape
+            'premiere_etape': self.premiere_etape.id
         }      
