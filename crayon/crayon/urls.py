@@ -26,6 +26,7 @@ from high_level.views import QuantiteRessourceJsonDetailView
 from high_level.views import StockJsonDetailView
 from high_level.views import EtapeJsonDetailView
 from high_level.views import ProduitJsonDetailView
+from high_level.views import ApiView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -35,6 +36,7 @@ urlpatterns = [
     path('machine/<int:pk>/', MachineJsonDetailView.as_view(), name='machine-detail'),
     path('objet/<int:pk>/', ObjetJsonDetailView.as_view(), name='objet-detail'),
     path('usine/<int:pk>/', UsineJsonDetailView.as_view(), name='usine-detail'),
+    path('api/<int:pk>/', ApiView.as_view(), name='api-detail'),
     path('quantiteressource/<int:pk>/', QuantiteRessourceJsonDetailView.as_view(), name='quantiteressource-detail'),
     path('stock/<int:pk>/', StockJsonDetailView.as_view(), name='stock-detail'),
     path('etape/<int:pk>/', EtapeJsonDetailView.as_view(), name='etape-detail'),
