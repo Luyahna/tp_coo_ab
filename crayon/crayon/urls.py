@@ -30,14 +30,18 @@ from high_level.views import ApiView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    path('villes/<int:pk>/', VilleJsonDetailView.as_view(), name='ville-detail'),
-    path('local/<int:pk>/', LocalJsonDetailView.as_view(), name='local-detail'),
-    path('machine/<int:pk>/', MachineJsonDetailView.as_view(), name='machine-detail'),
-    path('objet/<int:pk>/', ObjetJsonDetailView.as_view(), name='objet-detail'),
-    path('usine/<int:pk>/', UsineJsonDetailView.as_view(), name='usine-detail'),
-    path('api/<int:pk>/', ApiView.as_view(), name='api-detail'),
-    path('quantiteressource/<int:pk>/', QuantiteRessourceJsonDetailView.as_view(), name='quantiteressource-detail'),
-    path('stock/<int:pk>/', StockJsonDetailView.as_view(), name='stock-detail'),
-    path('etape/<int:pk>/', EtapeJsonDetailView.as_view(), name='etape-detail'),
-    path('produit/<int:pk>/', ProduitJsonDetailView.as_view(), name='produit-detail')]
+    path("villes/<int:pk>/", VilleJsonDetailView.as_view(), name="ville-detail"),
+    path("local/<int:pk>/", LocalJsonDetailView.as_view(), name="local-detail"),
+    path("machine/<int:pk>/", MachineJsonDetailView.as_view(), name="machine-detail"),
+    path("objet/<int:pk>/", ObjetJsonDetailView.as_view(), name="objet-detail"),
+    path("usine/<int:pk>/", UsineJsonDetailView.as_view(), name="usine-detail"),
+    path("api/<int:pk>/", ApiView.as_view(), name="api-detail"),
+    path(
+        "quantiteressource/<int:pk>/",
+        QuantiteRessourceJsonDetailView.as_view(),
+        name="quantiteressource-detail",
+    ),
+    path("stock/<int:pk>/", StockJsonDetailView.as_view(), name="stock-detail"),
+    path("etape/<int:pk>/", EtapeJsonDetailView.as_view(), name="etape-detail"),
+    path("produit/<int:pk>/", ProduitJsonDetailView.as_view(), name="produit-detail"),
+]

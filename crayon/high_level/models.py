@@ -1,7 +1,6 @@
 # Create your models here.
-import json
 from django.db import models
-from django.views.generic import DetailView
+
 
 class Ville(models.Model):
     nom_ville = models.CharField(max_length=100)
@@ -13,16 +12,18 @@ class Ville(models.Model):
 
     def json(self):
         return {
-            'nom_ville': self.nom_ville,
-            'code_postal': self.code_postal,
-            'prix_m2': self.prix_m2
+            "nom_ville": self.nom_ville,
+            "code_postal": self.code_postal,
+            "prix_m2": self.prix_m2,
         }
+
     def json_extended(self):
         return {
-            'nom_ville': self.nom_ville,
-            'code_postal': self.code_postal,
-            'prix_m2': self.prix_m2
+            "nom_ville": self.nom_ville,
+            "code_postal": self.code_postal,
+            "prix_m2": self.prix_m2,
         }
+
 
 class Local(models.Model):
     nom_local = models.CharField(max_length=100)
@@ -33,19 +34,20 @@ class Local(models.Model):
         return f"{self.nom_local} {self.ville} {self.surface_local}m2"
 
     def costs(self):
-    	return (self.surface_local) * (self.ville.prix_m2)
+        return (self.surface_local) * (self.ville.prix_m2)
 
     def json(self):
         return {
-            'nom_local': self.nom_local,
-            'ville': self.ville.id,
-            'surface_local': self.surface_local
+            "nom_local": self.nom_local,
+            "ville": self.ville.id,
+            "surface_local": self.surface_local,
         }
+
     def json_extended(self):
         return {
-            'nom_local': self.nom_local,
-            'ville': self.ville.json_extended(),
-            'surface_local': self.surface_local
+            "nom_local": self.nom_local,
+            "ville": self.ville.json_extended(),
+            "surface_local": self.surface_local,
         }
 
 
@@ -58,20 +60,20 @@ class Machine(models.Model):
         return f"{self.nom_machine}{self.n_serie_machine}"
 
     def costs(self):
-    	return  self.prix_machine
+        return self.prix_machine
 
     def json(self):
         return {
-            'nom_machine': self.nom_machine,
-            'prix_machine': self.prix_machine,
-            'n_serie_machine': self.n_serie_machine
+            "nom_machine": self.nom_machine,
+            "prix_machine": self.prix_machine,
+            "n_serie_machine": self.n_serie_machine,
         }
 
     def json_extended(self):
         return {
-            'nom_machine': self.nom_machine,
-            'prix_machine': self.prix_machine,
-            'n_serie_machine': self.n_serie_machine
+            "nom_machine": self.nom_machine,
+            "prix_machine": self.prix_machine,
+            "n_serie_machine": self.n_serie_machine,
         }
 
 
@@ -83,18 +85,13 @@ class Objet(models.Model):
         return f"{self.nom_objet}"
 
     def costs(self):
-    	return self.prix_objet
+        return self.prix_objet
 
     def json(self):
-        return {
-            'nom_objet': self.nom_objet,
-            'prix_objet': self.prix_objet
-        }
+        return {"nom_objet": self.nom_objet, "prix_objet": self.prix_objet}
+
     def json_extended(self):
-        return {
-            'nom_objet': self.nom_objet,
-            'prix_objet': self.prix_objet
-        }
+        return {"nom_objet": self.nom_objet, "prix_objet": self.prix_objet}
 
 
 class Usine(Local):
@@ -110,22 +107,18 @@ class Usine(Local):
         liste_machines = []
         for machine in self.machines.all():
             liste_machines.append(machine.id)
-        return {
-            'machines': liste_machines,
-            **super().json()
-        }
+        return {"machines": liste_machines, **super().json()}
 
     def json_extended(self):
         liste_machines = []
         for machine in self.machines.all():
             liste_machines.append(machine.json_extended())
-        return {
-            'machines': liste_machines,
-            **super().json_extended()
-        }
+        return {"machines": liste_machines, **super().json_extended()}
+
 
 class SiegeSocial(Local):
     pass
+
 
 class Ressource(Objet):
     pass
@@ -139,17 +132,10 @@ class QuantiteRessource(models.Model):
         return self.ressource.prix_objet * self.quantite
 
     def json(self):
-        return {
-            'ressource': self.ressource.id,
-            'quantite': self.quantite
-        }
+        return {"ressource": self.ressource.id, "quantite": self.quantite}
 
     def json_extended(self):
-        return {
-            'ressource': self.ressource.json_extended(),
-            'quantite': self.quantite
-        }
-
+        return {"ressource": self.ressource.json_extended(), "quantite": self.quantite}
 
 
 class Stock(models.Model):
@@ -157,26 +143,20 @@ class Stock(models.Model):
     nombre = models.IntegerField()
     usine = models.ForeignKey(Usine, on_delete=models.PROTECT)
 
-
     def __str__(self):
         return f"{self.objet}"
 
     def costs(self):
         return self.object.prix_objet * self.nombre
 
-
     def json(self):
-        return {
-            'objet': self.objet.id,
-            'nombre': self.nombre,
-            'usine': self.usine.id
-        }
+        return {"objet": self.objet.id, "nombre": self.nombre, "usine": self.usine.id}
 
     def json_extended(self):
         return {
-            'objet': self.objet.json_extended(),
-            'nombre': self.nombre,
-            'usine': self.usine.json_extended()
+            "objet": self.objet.json_extended(),
+            "nombre": self.nombre,
+            "usine": self.usine.json_extended(),
         }
 
 
@@ -185,37 +165,37 @@ class Etape(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
     quantite_ressource = models.ForeignKey(QuantiteRessource, on_delete=models.PROTECT)
     duree = models.IntegerField()
-    etape_suivante = models.ForeignKey("self",blank= True, null = True ,on_delete=models.PROTECT)
+    etape_suivante = models.ForeignKey(
+        "self", blank=True, null=True, on_delete=models.PROTECT
+    )
 
     def __str__(self):
         return f"{self.nom_etape}"
 
     def json(self):
         return {
-            'nom_etape': self.nom_etape,
-            'machine': self.machine.id,
-            'quantite_ressource': self.quantite_ressource.id,
-            'duree': self.duree,
-            'etape_suivante': self.etape_suivante.id
+            "nom_etape": self.nom_etape,
+            "machine": self.machine.id,
+            "quantite_ressource": self.quantite_ressource.id,
+            "duree": self.duree,
+            "etape_suivante": self.etape_suivante.id,
         }
 
     def json_extended(self):
         return {
-            'nom_etape': self.nom_etape,
-            'machine': self.machine.json_extended(),
-            'quantite_ressource': self.quantite_ressource.json_extended(),
-            'duree': self.duree,
-            'etape_suivante': self.etape_suivante.json_extended()
+            "nom_etape": self.nom_etape,
+            "machine": self.machine.json_extended(),
+            "quantite_ressource": self.quantite_ressource.json_extended(),
+            "duree": self.duree,
+            "etape_suivante": self.etape_suivante.json_extended(),
         }
+
 
 class Produit(models.Model):
     premiere_etape = models.ForeignKey(Etape, on_delete=models.PROTECT)
 
     def json(self):
-        return {
-            'premiere_etape': self.premiere_etape.id
-            }
+        return {"premiere_etape": self.premiere_etape.id}
+
     def json_extended(self):
-        return {
-             'premiere_etape': self.premiere_etape.json_extended()
-        }
+        return {"premiere_etape": self.premiere_etape.json_extended()}
