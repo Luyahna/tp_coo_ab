@@ -149,16 +149,16 @@ class Objet {
 
 class Usine {
  private:
-  vector < unique_ptr<Machine> p_machine;
+  vector<unique_ptr<Machine> > p_machine;
   int machine;
 
  public:
-  Usine(int machine_) : machine(machine_) {
+  /*Usine(int machine_) : machine(machine_) {
     p_machine = make_unique<Machine>(machine);
-  }
+  }*/
 
   Usine(const json& data) : machine(data["machine"]) {
-    p_machine = make_unique<Machine>(machine);
+    // p_machine = make_unique<Machine>(machine);
   }
 
   Usine(int id) {
@@ -166,8 +166,8 @@ class Usine {
         cpr::Url{"http://127.0.0.1:8000/usine/" + to_string(id) + "/"});
 
     json j = json::parse(r.text);
-    machine = j["machine"];
-    p_machine = make_unique<Machine>(machine);
+    // p_machine= j["machine"];
+    // p_machine = make_unique<Machine>(machine);
   }
 
   void afficherU() const {
@@ -179,19 +179,19 @@ class Usine {
 
 class QuantiteRessource {
  private:
-  unique_ptr<Ressource> p_ressource;
+  // unique_ptr<Ressource> p_ressource;
   int quantite;
   int ressource;
 
  public:
   QuantiteRessource(int quantite_, int ressource_)
       : quantite(quantite_), ressource(ressource_) {
-    p_ressource = make_unique<Ressource>(ressource);
+    // p_ressource = make_unique<Ressource>(ressource);
   }
 
   QuantiteRessource(const json& data)
       : quantite(data["quantite"]), ressource(data["ressource"]) {
-    p_ressource = make_unique<Ressource>(ressource);
+    // p_ressource = make_unique<Ressource>(ressource);
   }
 
   QuantiteRessource(int id) {
@@ -201,7 +201,7 @@ class QuantiteRessource {
     json j = json::parse(r.text);
     quantite = j["quantite"];
     ressource = j["ressource"];
-    p_ressource = make_unique<Ressource>(ressource);
+    // p_ressource = make_unique<Ressource>(ressource);
   }
 
   void afficherR() const {
@@ -222,7 +222,7 @@ class Stock {
 
  public:
   Stock(int usine_, int objet_, int nombre_)
-      : usine(nom_local_), objet(ville_), nombre(surface_local_) {
+      : usine(usine_), objet(objet_), nombre(nombre_) {
     p_objet = make_unique<Objet>(objet);
     p_usine = make_unique<Usine>(usine);
   }
@@ -258,19 +258,21 @@ class Etape {
  private:
   string nom_etape;
   unique_ptr<QuantiteRessource> p_quantite_ressource;
-  int quantite_ressource int duree;
+  int quantite_ressource;
+  int duree;
   unique_ptr<Machine> p_machine;
   int machine;
   unique_ptr<Etape> p_etape_suivante;
- int etape_suivante
+  int etape_suivante;
 
-     public : Etape(string nom_etape_, int quantite_ressource_, int duree_,
-                    int machine_, int etape_suivante_)
-     : nom_etape(nom_etape_),
-       quantite_ressource(quantite_ressource_),
-       duree(duree_),
-       machine(machine_),
-       etape_suivante(etape_suivante_) {
+ public:
+  Etape(string nom_etape_, int quantite_ressource_, int duree_, int machine_,
+        int etape_suivante_)
+      : nom_etape(nom_etape_),
+        quantite_ressource(quantite_ressource_),
+        duree(duree_),
+        machine(machine_),
+        etape_suivante(etape_suivante_) {
     p_quantite_ressource = make_unique<QuantiteRessource>(quantite_ressource);
     p_machine = make_unique<Machine>(machine);
     p_etape_suivante = make_unique<Etape>(etape_suivante);
@@ -329,10 +331,10 @@ int main() {
   m.afficherM();
 
   const auto o = Objet{1};
-  m.afficherM();
+  o.afficherO();
 
   const auto etape1 = Etape{1};
-  m.afficherE();
+  etape1.afficherE();
 
   // cout<<r.text<<endl<<r.status_code<<endl;
 
