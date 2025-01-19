@@ -8,10 +8,10 @@ Le modèle UML utilisé pour l'implémentation est présenté ci-dessous :
  
 # Dépendances
 ## Pré-requis
-- Git
-- Python
-- Pip
-- Venv
+- Git (version 2.43.0)
+- Python (version 3.12.3)
+- Pip (version 24.0)
+- Venv (version 3.12.3)
 ## Dépendances Python
 - Pip
 - Django
